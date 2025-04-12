@@ -10,13 +10,6 @@
     "removeComments": true,
     "isolatedModules": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "docs",
-    "tests"
-  ]
+  "include": ["src"],
+  "exclude": ["**/*.test.ts", "**/*.spec.ts", "docs", "tests"]
 }

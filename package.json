@@ -28,5 +28,13 @@
     "@types/node": "^22.14.0",
     "glob": "^11.0.1",
     "minimatch": "^10.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/react-component-search"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/react-component-search/issues"
+  },
+  "homepage": "https://github.com/yourusername/react-component-search#readme"
 }
