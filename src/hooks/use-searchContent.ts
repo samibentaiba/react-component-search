@@ -18,8 +18,8 @@ export interface GroupedResults {
 export function useSearch(
   onSearchComplete: (
     query: string | null,
-    results: SearchResult[],
-  ) => void = () => {},
+    results: SearchResult[]
+  ) => void = () => {}
 ) {
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState<SearchResult[]>([]);
@@ -67,22 +67,26 @@ export function useSearch(
     );
     setResults(filtered);
   }, [query, index]);
-
+  
   const groupedResults: GroupedResults = results.reduce((acc, result) => {
-    if (!acc[result.path]) acc[result.path] = [];
-    acc[result.path].push(result.content);
+    const path = result.path;
+    (acc[path] ??= []).push(result.content);
     return acc;
   }, {} as GroupedResults);
 
   const cleanPath = useCallback(({ path }: { path: string | null }) => {
-    return path && path.startsWith("src/") ? path.slice(4) : path || "";
+    if (!path) return "";
+    return path.startsWith("src/") ? path.slice(4) : path;
   }, []);
 
-  const handleSearchSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    setShowResults(true);
-    onSearchComplete(query, results);
-  }, [query, results, onSearchComplete]);
+  const handleSearchSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      setShowResults(true);
+      onSearchComplete(query, results);
+    },
+    [query, results, onSearchComplete]
+  );
 
   const handleInputChange = useCallback((value: string) => {
     setQuery(value);

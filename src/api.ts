@@ -8,7 +8,7 @@ export interface SearchResult {
 }
 
 export function searchIndex(query: string): SearchResult[] {
-  const filePath = path.join(process.cwd(), "public", "search-index.json");
+  const filePath = path.join(process.cwd(), "src/data", "search-index.json");
   const rawData = fs.readFileSync(filePath, "utf-8");
   const index = JSON.parse(rawData) as SearchResult[];
 
