@@ -1,6 +1,6 @@
 {
   "name": "react-component-search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generate search indexes and component maps for React projects",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
