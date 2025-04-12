@@ -1,0 +1,32 @@
+{
+  "name": "react-component-search",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./dist/search.js",
+  "module": "./dist/search.js",
+  "types": "./dist/search.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/search.js",
+      "require": "./dist/search.js",
+      "types": "./dist/search.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json"
+  },
+  "private": false,
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "dependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/minimatch": "^5.1.2",
+    "@types/node": "^22.14.0",
+    "glob": "^11.0.1",
+    "minimatch": "^10.0.1"
+  }
+}
