@@ -1,5 +1,4 @@
-
-// src/search.ts
+// src/searchNode.ts
 
 import fs from "fs";
 import path from "path";
@@ -26,7 +25,7 @@ function parseTSX(content: string) {
     content,
     ts.ScriptTarget.Latest,
     true,
-    ts.ScriptKind.TSX
+    ts.ScriptKind.TSX,
   );
   return sourceFile;
 }

@@ -20,14 +20,17 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/react": "^19.1.1"
   },
   "dependencies": {
     "@types/glob": "^8.1.0",
     "@types/minimatch": "^5.1.2",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.14.1",
+    "axios": "^1.8.4",
     "glob": "^11.0.1",
-    "minimatch": "^10.0.1"
+    "minimatch": "^10.0.1",
+    "react": "^19.1.0"
   },
   "repository": {
     "type": "git",

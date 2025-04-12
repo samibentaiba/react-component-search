@@ -1,2 +1,2 @@
 // index.ts
-export * from "./src/search";
+export * from "./src/searchNode";
