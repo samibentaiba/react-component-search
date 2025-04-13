@@ -1,6 +1,6 @@
 {
   "name": "react-component-search",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Generate search indexes and component maps for React projects",
   "type": "module",
   "files": [
@@ -13,7 +13,7 @@
     }
   },
   "bin": {
-    "react-component-search": "./dist/bin/node.js"
+    "react-component-search": "dist/bin/node.js"
   },
   "scripts": {
     "build": "tsc",
@@ -40,7 +40,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/samibentaiba/react-component-search"
+    "url": "git+https://github.com/samibentaiba/react-component-search.git"
   },
   "bugs": {
     "url": "https://github.com/samibentaiba/react-component-search/issues"
