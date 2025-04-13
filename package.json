@@ -1,6 +1,6 @@
 {
   "name": "react-component-search",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generate search indexes and component maps for React projects",
   "type": "module",
   "files": [
@@ -8,8 +8,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/search.js",
-      "types": "./dist/search.d.ts"
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
     }
   },
   "bin": {

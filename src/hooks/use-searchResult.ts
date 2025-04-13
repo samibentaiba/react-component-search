@@ -1,16 +1,13 @@
 // hooks/use-searchResult.ts
 import { useState } from "react";
 
-export type SearchResult = {
-  path: string;
-  content: string;
-};
+import type { Search as SearchResult } from "@/types";
 
 export const useSearchResult = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const handleSearchComplete = (
     _query: string | null,
-    results: SearchResult[],
+    results: SearchResult[]
   ) => {
     setSearchResults(results);
   };

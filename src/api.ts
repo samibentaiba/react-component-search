@@ -2,10 +2,7 @@
 import fs from "fs";
 import path from "path";
 
-export interface SearchResult {
-  path: string;
-  content: string;
-}
+import type { Search as SearchResult } from "@/types";
 
 export function searchIndex(query: string): SearchResult[] {
   const filePath = path.join(process.cwd(), "src/data", "search-index.json");

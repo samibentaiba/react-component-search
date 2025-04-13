@@ -3,8 +3,7 @@
 
 import { useEffect, useState } from "react";
 import type { ComponentType } from "react";
-
-type ComponentLoader = () => Promise<{ default: ComponentType<any> }>;
+import type { ComponentLoader } from "@/types";
 
 export function useSearchDynamicImport(
   path: string | null,

@@ -1,18 +1,13 @@
+
 // hooks/use-searchContent.ts
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
-// Types
-export interface SearchResult {
-  path: string;
-  content: string;
-}
 
-export interface GroupedResults {
-  [path: string]: string[];
-}
+import type { Search as SearchResult } from "@/types";
+import type { GroupedResults } from "@/types";
 
 // Hook
 export function useSearch(
@@ -67,7 +62,7 @@ export function useSearch(
     );
     setResults(filtered);
   }, [query, index]);
-  
+
   const groupedResults: GroupedResults = results.reduce((acc, result) => {
     const path = result.path;
     (acc[path] ??= []).push(result.content);
