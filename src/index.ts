@@ -6,6 +6,8 @@ import ts from "typescript";
 import { minimatch } from "minimatch";
 
 export * from "./hooks/use-searchContent";
+export * from "./hooks/use-searchDynamicImport";
+export * from "./hooks/use-searchResult";
 export * from "./api";
 
 // Type definitions
