@@ -1,149 +1,177 @@
-# React Component Search
+# `react-component-search`
 
-A utility to generate search indexes and component maps for React projects. This tool helps you efficiently search through your React components and dynamically import them when needed.
+A powerful and flexible search solution for React and Next.js projects. This package provides hooks and utilities to dynamically search through JSX components, including searching for text content in your components and generating a searchable index. The package includes server-side and client-side hooks for easy integration.
 
 ## Features
 
-- **Search Index Generation**: Extracts text content from React components and stores it in a searchable JSON file.
-- **Dynamic Component Mapping**: Creates a TypeScript file mapping component paths to dynamic imports.
-- **Customizable**: Supports configuration for source directories, output paths, excluded files, and search terms.
-- **CLI and Programmatic Usage**: Use it directly from the command line or integrate it into your project.
+- Search through JSX components and HTML content in a React/Next.js project.
+- Generates search indexes and component maps dynamically.
+- Provides a flexible API for client-side searching with hooks.
+- Includes dynamic imports for components, making them lazy-loadable.
+- Easy integration with Next.js API routes and client-side search UI.
 
 ## Installation
 
-Install the package globally or as a development dependency:
+You can install the package via npm:
 
 ```bash
-# Install globally
-npm install -g react-component-search
+npm install react-component-search
+```
 
-# Or install as a development dependency
-npm install --save-dev react-component-search
+Or with yarn:
+
+```bash
+yarn add react-component-search
 ```
 
 ## Usage
 
-### Command Line
+### 1. Indexing Components
 
-Run the tool using the `react-component-search` command:
+The package provides a method to generate a search index of your components and their content. You can call `buildIndexes` to automatically generate both `search-index.json` and a dynamic `componentMap.ts` file.
 
-```bash
-# Run with default settings
-react-component-search
+```typescript
+import { buildIndexes } from 'react-component-search';
 
-# Specify source directory
-react-component-search --src src/components
-
-# Specify output directory
-react-component-search --output src/data
-
-# Exclude specific patterns
-react-component-search --exclude "src/components/theme-provider.tsx" "**/ui/**"
-
-# Specify search term (leave empty to index all content)
-react-component-search --search-term "some text"
-
-# Use a configuration file
-react-component-search --config project-indexer.json
+buildIndexes();  // Generates search index and component map
 ```
 
-### Configuration File
+This will create two files in the `src/data` folder:
+- `search-index.json`: A searchable index of your components.
+- `componentMap.ts`: A dynamic map for lazy-loading components.
 
-You can create a `project-indexer.json` file in your project root to define custom settings:
+### 2. Using the Search Hook
 
-```json
-{
-  "src": ["src/components", "src/layouts"],
-  "exclude": ["src/components/theme-provider.tsx", "**/ui/**"],
-  "outputDir": "src/data",
-  "searchTerm": ""
-}
+You can use the `useSearch` hook to integrate search functionality in your React components. This hook works by fetching the search index from the server and filtering the results based on the user's query.
+
+```typescript
+import { useSearch } from 'react-component-search';
+
+const SearchComponent = () => {
+  const { query, setQuery, results, loading, handleSearchSubmit } = useSearch(
+    (query, results) => {
+      console.log('Search complete:', query, results);
+    }
+  );
+
+  return (
+    <form onSubmit={handleSearchSubmit}>
+      <input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search components..."
+      />
+      {loading ? <p>Loading...</p> : <ul>{results.map((res) => <li key={res.path}>{res.content}</li>)}</ul>}
+    </form>
+  );
+};
 ```
 
-### Programmatic Usage
+### 3. Client-Side Dynamic Imports
 
-You can also use the package programmatically in your Node.js scripts:
+For optimized performance, components can be lazily loaded using dynamic imports. The `useSearchDynamicImport` hook is used to dynamically import a component based on the search result.
 
-```javascript
-import { buildIndexes } from "react-component-search";
+```typescript
+import { useSearchDynamicImport } from 'react-component-search';
+import { componentMap } from '@/data/componentMap';
 
-buildIndexes({
-  src: ["src/components"],
-  exclude: ["**/ui/**"],
-  outputDir: "src/data",
-  searchTerm: "",
-}).then(() => {
-  console.log("Indexes built successfully!");
-});
+const SearchResultComponent = ({ path }) => {
+  const Component = useSearchDynamicImport(path, componentMap);
+
+  if (!Component) return <p>Loading component...</p>;
+
+  return <Component />;
+};
 ```
 
-### In `package.json` Scripts
+### 4. API Route for Server-Side Search
 
-Add the tool to your project scripts for easier usage:
+You can use the API to perform searches on the server side by querying the `search-index.json` file.
 
-```json
-"scripts": {
-  "generate-indexes": "react-component-search",
-  "dev": "npm run generate-indexes && next dev",
-  "build": "npm run generate-indexes && next build"
-}
+```typescript
+import { searchIndex } from 'react-component-search/api';
+
+const results = searchIndex("your search term");
+console.log(results);
 ```
 
-## Output
+## API Reference
 
-The tool generates the following files:
+### `buildIndexes()`
 
-1. **`search-index.json`**: A JSON file containing all text content from your components.
-2. **`componentMap.ts`**: A TypeScript file mapping component paths to dynamic imports.
+Generates the search index and component map.
 
-## Options
+- **Usage**: `buildIndexes()`
 
-| Option          | Alias | Type     | Default          | Description                           |
-| --------------- | ----- | -------- | ---------------- | ------------------------------------- |
-| `--src`         |       | `string` | `src/components` | Source directory to scan.             |
-| `--output`      | `-o`  | `string` | `src/data`       | Output directory for generated files. |
-| `--exclude`     | `-e`  | `array`  | `[]`             | Paths or patterns to exclude.         |
-| `--search-term` |       | `string` | `""`             | Term to search for in components.     |
-| `--config`      | `-c`  | `string` |                  | Path to a configuration file.         |
+### `generateSearchIndex()`
 
-## Example
+Generates the search index by scanning components and extracting content.
 
-To generate a search index and component map for your project:
+- **Returns**: `SearchIndexEntry[]`
+  - `path`: The file path of the component.
+  - `content`: The matching content within the component.
 
-```bash
-react-component-search --src src/components --output src/data --exclude "**/ui/**"
+### `generateComponentMap()`
+
+Generates a dynamic map for lazy-loading components.
+
+- **Parameters**: `entries` (Array of `SearchIndexEntry[]`).
+
+### `useSearch`
+
+Custom React hook that provides search functionality.
+
+- **Parameters**:
+  - `onSearchComplete`: Callback function for when search is completed.
+  - `apiUrl`: The URL for the search API (default is `/api/search-index`).
+  - `queryParams`: Additional query parameters for the search API (optional).
+
+- **Returns**:
+  - `query`: The current search query.
+  - `setQuery`: Function to update the query.
+  - `results`: The filtered search results.
+  - `error`: Any errors that occurred while fetching the search index.
+  - `loading`: Whether the search is currently loading.
+  - `showResults`: Whether to show the search results.
+  - `groupedResults`: The results grouped by file paths.
+  - `handleSearchSubmit`: Form submission handler.
+  - `handleInputChange`: Input change handler.
+
+### `useSearchDynamicImport`
+
+Custom hook for dynamically importing a component based on its path.
+
+- **Parameters**:
+  - `path`: The path of the component.
+  - `componentMap`: The dynamic component map (generated by `generateComponentMap()`).
+
+- **Returns**: A dynamically loaded React component.
+
+## Example Project Structure
+
 ```
-
-## Development
-
-### Build
-
-To build the project, run:
-
-```bash
-npm run build
+src/
+  components/
+    MyComponent.tsx
+    AnotherComponent.tsx
+  data/
+    search-index.json
+    componentMap.ts
+  hooks/
+    use-search.ts
+    use-searchApi.ts
+    use-searchContent.ts
+    use-searchDynamicImport.ts
+    use-searchResult.ts
+  api.ts
+  index.ts
 ```
-
-### Publish
-
-Before publishing, ensure the project is built:
-
-```bash
-npm run prepublishOnly
-```
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ## Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests.
+We welcome contributions! If you have a feature request or find a bug, feel free to open an issue or submit a pull request.
 
-## Support
+## License
 
-For issues or feature requests, please visit the [GitHub Issues](https://github.com/samibentaiba/react-component-search/issues) page.
-
-## Repository
-
-- **GitHub**: [https://github.com/samibentaiba/react-component-search](https://github.com/samibentaiba/react-component-search)
+This package is licensed under the MIT License. See LICENSE for more details.

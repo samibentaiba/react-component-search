@@ -1,6 +1,6 @@
 // src/index.ts
-import path from "path";
 import fs from "fs";
+import path from "path";
 import { glob } from "glob";
 import ts from "typescript";
 import { minimatch } from "minimatch";
@@ -17,9 +17,9 @@ interface SearchIndexEntry {
 }
 
 const EXCLUDED_PATHS = [
-  "src/components/theme-provider.tsx",
   "src/components/pages/aides/SubSide/radio-group",
   "src/components/pages/aides/SubSide/slider",
+  "src/components/theme-provider.tsx",
   "**/ui/**",
 ];
 
@@ -202,7 +202,9 @@ export function buildIndexes() {
     console.error("❌ Error building indexes:", error);
   }
 }
-export * from "./api";
-export * from "./hooks/use-searchContent";
 export * from "./hooks/use-searchDynamicImport";
+export * from "./hooks/use-searchContent";
 export * from "./hooks/use-searchResult";
+export * from "./hooks/use-searchApi";
+export * from "./hooks/use-search";
+export * from "./api";

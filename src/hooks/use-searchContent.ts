@@ -1,54 +1,14 @@
-
 // hooks/use-searchContent.ts
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-
-
+import { useCallback, useState, useEffect } from "react";
 import type { Search as SearchResult } from "@/types";
 import type { GroupedResults } from "@/types";
 
-// Hook
-export function useSearch(
-  onSearchComplete: (
-    query: string | null,
-    results: SearchResult[]
-  ) => void = () => {}
-) {
-  const [query, setQuery] = useState("");
-  const [index, setIndex] = useState<SearchResult[]>([]);
+// Hook for filtering and grouping search results based on query
+export function useSearchContent(query: string, index: SearchResult[]) {
   const [results, setResults] = useState<SearchResult[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const [showResults, setShowResults] = useState(false);
-
-  // Fetch search index when query changes
-  useEffect(() => {
-    const fetchIndex = async () => {
-      setLoading(true);
-      try {
-        const url = `/api/search-index?query=${encodeURIComponent(query)}`;
-        console.log("Making request to:", url);
-        const response = await axios.get<SearchResult[]>(url);
-        setIndex(response.data);
-        setError(null);
-      } catch (err: unknown) {
-        console.error("Error fetching search index:", err);
-        if (err instanceof Error) {
-          setError(`Failed to load search data: ${err.message}`);
-        } else {
-          setError("Failed to load search data. Please try again later.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (query.trim()) {
-      fetchIndex();
-    }
-  }, [query]);
 
   // Filter results when query or index changes
   useEffect(() => {
@@ -74,30 +34,11 @@ export function useSearch(
     return path.startsWith("src/") ? path.slice(4) : path;
   }, []);
 
-  const handleSearchSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      setShowResults(true);
-      onSearchComplete(query, results);
-    },
-    [query, results, onSearchComplete]
-  );
-
-  const handleInputChange = useCallback((value: string) => {
-    setQuery(value);
-    setShowResults(true);
-  }, []);
-
   return {
-    query,
-    setQuery,
     results,
-    error,
-    loading,
     showResults,
     groupedResults,
     cleanPath,
-    handleSearchSubmit,
-    handleInputChange,
+    setShowResults,
   };
 }
