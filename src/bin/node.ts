@@ -3,7 +3,7 @@
 // CLI entry point
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { run } from '../src/index';
+import { run } from '../index';
 
 const argv = yargs(hideBin(process.argv))
   .option('config', {

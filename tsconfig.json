@@ -7,9 +7,8 @@
     "moduleDetection": "force",
     "jsx": "react-jsx",
     "allowJs": true,
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": false,
     "verbatimModuleSyntax": true,
-
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,23 +17,18 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-
-    // Type declarations only (no JS output), best for libraries and apps
-    "noEmit": true,
-
-    // Enable interop for CommonJS modules
-    "esModuleInterop": true,
-
-    // Enable declaration for generating .d.ts files if needed later
-    "declaration": true,
-
-    // Still needed for tooling that expects compiled output
+    "rootDir": "src",
     "outDir": "./dist",
-
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noEmit": false,
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/scripts/**/*", "src/**/*", "bin/**/*"],
+  "include": ["src/**/*", "bin/**/*"],
   "exclude": ["node_modules", "dist"]
 }

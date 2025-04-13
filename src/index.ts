@@ -1,8 +1,12 @@
+// src/index.ts
 import path from "path";
 import fs from "fs";
 import { glob } from "glob";
 import ts from "typescript";
 import { minimatch } from "minimatch";
+
+export * from "./hooks/use-searchContent";
+export * from "./api";
 
 // Type definitions
 export type SearchResult = {

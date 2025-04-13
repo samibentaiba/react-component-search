@@ -2,34 +2,27 @@
   "name": "react-component-search",
   "version": "1.0.1",
   "description": "Generate search indexes and component maps for React projects",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
   "type": "module",
-  "module": "./dist/search.js",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
       "import": "./dist/search.js",
-      "require": "./dist/search.js",
       "types": "./dist/search.d.ts"
     }
   },
+  "bin": {
+    "react-component-search": "./dist/bin/node.js"
+  },
   "scripts": {
     "build": "tsc",
-    "postbuild": "chmod +x ./dist/bin/node.ts",
+    "postbuild": "chmod +x ./dist/src/bin/node.js",
     "prepublishOnly": "npm run build"
   },
   "private": false,
   "peerDependencies": {
-    "typescript": "^5.8.3"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "@types/react": "^19.1.1",
-    "@types/yargs": "^17.0.33",
-    "yargs": "^17.7.2"
+    "typescript": "^5.0.0"
   },
   "dependencies": {
     "@types/glob": "^8.1.0",
@@ -38,7 +31,12 @@
     "axios": "^1.8.4",
     "glob": "^11.0.1",
     "minimatch": "^10.0.1",
-    "react": "^19.1.0"
+    "react": "^19.1.0",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.47",
+    "@types/yargs": "^17.0.33"
   },
   "repository": {
     "type": "git",
